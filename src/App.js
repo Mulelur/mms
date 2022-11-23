@@ -1,24 +1,33 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import DashBoard from "./views/dashboard";
+import SingIn from "./views/auth/signin";
+
+import { Helmet } from "react-helmet-async";
+import { Route, BrowserRouter, Routes } from "react-router-dom";
+import PrivateRoutes from "./routes/privateRoutes";
+import SingUp from "./views/auth/signup";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+      <Helmet titleTemplate="%s - MMS" defaultTitle="MMS">
+        <meta name="description" content="A MMS" />
+      </Helmet>
+
+      {/* Public Routes  */}
+      <Routes>
+        <Route path={process.env.PUBLIC_URL + "/signin"} element={<SingIn />} />
+
+        <Route path={process.env.PUBLIC_URL + "/signup"} element={<SingUp />} />
+
+        {/* <Route element={<NotFoundPage />} /> */}
+
+        {/* Private Routes */}
+        <Route element={<PrivateRoutes />}>
+          <Route path={process.env.PUBLIC_URL + "/"} element={<DashBoard />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
   );
 }
 
