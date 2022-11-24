@@ -123,7 +123,7 @@ const Col = styled.div`
 `;
 
 const In = styled.div`
-  padding: 12rem 9rem;
+  padding: 4rem 9rem;
 
   @media only screen and (max-width: 768px) {
     flex-direction: column;
