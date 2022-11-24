@@ -78,7 +78,7 @@ const SingIn = () => {
                   </FormCheckbox>
                 </FormGroup>
                 <FormGroup>
-                  <Button style={{ width: "100%" }}>Sing in</Button>
+                  <Button style={{ width: "100%" }}>Sign in</Button>
                 </FormGroup>
                 <FormGroup>
                   <Row>
