@@ -5,7 +5,6 @@ import {
   ModalBody,
   ModalHeader,
   Form,
-  FormInput,
   FormGroup,
   FormRadio,
   FormSelect,
@@ -15,11 +14,22 @@ import { Button } from "shards-react";
 import DatePicker from "react-datepicker";
 
 import "react-datepicker/dist/react-datepicker.css";
+import Notify from "./notifiy";
 
 const ModalComp = ({ open, toggle }) => {
-  const [venue, setVenue] = React.useState("Vaal");
+  const [venue, setVenue] = React.useState("TURNING POINT TUTORS");
   const [date, setDate] = React.useState();
+  const [isValid, setIsValid] = React.useState(false);
   const [capacity, setCapacity] = React.useState("10 - 25");
+
+  const checkRoom = (v) => {
+    switch (v) {
+      case "CASA TOSCANA FUNCTION VENUE":
+        return false;
+      default:
+        return true;
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -31,14 +41,22 @@ const ModalComp = ({ open, toggle }) => {
       name: "The Room at the cones",
     };
 
-    try {
-      await Axios.post("https://weblinnk-api.herokuapp.com/api/bookings", {
-        data,
-      });
+    if (checkRoom(venue)) {
+      try {
+        await Axios.post("https://weblinnk-api.herokuapp.com/api/bookings", {
+          data,
+        });
 
-      toggle();
-    } catch (error) {
-      console.log(error);
+        toggle();
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      console.log("not avaliable");
+
+      setIsValid(true);
+
+      //   toggle();
     }
   };
 
@@ -57,9 +75,11 @@ const ModalComp = ({ open, toggle }) => {
               <FormGroup>
                 <label htmlFor="#username">Date/Time</label>
                 <DatePicker
+                  className="form-control"
                   validate
                   selected={date}
                   onChange={(d) => setDate(d)}
+                  required
                 />
               </FormGroup>
               <FormGroup>
@@ -78,31 +98,32 @@ const ModalComp = ({ open, toggle }) => {
               <FormGroup>
                 <p className="mb-2">Select your venue:</p>
                 <FormRadio
+                  invalid={isValid}
                   name="fruit"
-                  checked={venue === "vaal"}
+                  checked={venue === "CASA TOSCANA FUNCTION VENUE"}
                   onChange={() => {
-                    setVenue("vaal");
+                    setVenue("CASA TOSCANA FUNCTION VENUE");
                   }}
                 >
-                  Vaal
+                  CASA TOSCANA FUNCTION VENUE
                 </FormRadio>
                 <FormRadio
                   name="fruit"
-                  checked={venue === "limpopo"}
+                  checked={venue === "SILVER LAKES CLUBHOUSE"}
                   onChange={() => {
-                    setVenue("limpopo");
+                    setVenue("SILVER LAKES CLUBHOUSE");
                   }}
                 >
-                  Limpopo
+                  SILVER LAKES CLUBHOUSE
                 </FormRadio>
                 <FormRadio
                   name="fruit"
-                  checked={venue === "jhb"}
+                  checked={venue === "TURNING POINT TUTORS"}
                   onChange={() => {
-                    setVenue("jhb");
+                    setVenue("TURNING POINT TUTORS");
                   }}
                 >
-                  JHB
+                  TURNING POINT TUTORS
                 </FormRadio>
                 <span>
                   <strong>Selected venue:</strong>{" "}
@@ -119,6 +140,7 @@ const ModalComp = ({ open, toggle }) => {
               </FormGroup>
             </Form>
           </Container>
+          {/* <Notify /> */}
         </ModalBody>
       </Modal>
       {/* Modal end  */}

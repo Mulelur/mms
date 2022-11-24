@@ -13,7 +13,7 @@ import { useNavigate } from "react-router-dom";
 
 const SingUp = () => {
   const img =
-    "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1316&q=80";
+    "https://images.unsplash.com/photo-1576436978289-3bcb91a03710?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2835&q=80";
 
   const [password, setPassword] = React.useState("");
   const [confirmPassword, setConfirmPassword] = React.useState("");
@@ -85,7 +85,8 @@ const SingUp = () => {
                 <FormGroup>
                   <label htmlFor="#password">Confirm Password</label>
                   <FormInput
-                    type="confirm-password"
+                    // invalid
+                    type="password"
                     id="#confirm-password"
                     placeholder="Confirm Password"
                     onChange={(e) => setConfirmPassword(e.target.value)}
