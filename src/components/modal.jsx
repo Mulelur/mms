@@ -25,8 +25,19 @@ const ModalComp = ({ open, toggle }) => {
   const checkRoom = (v) => {
     switch (v) {
       case "CASA TOSCANA FUNCTION VENUE":
+        if (capacity === "10 - 30") {
+          return true;
+        }
         return false;
+      case "SILVER LAKES CLUBHOUSE":
+        if (capacity === "10 - 30") {
+          return false;
+        }
+        return true;
       default:
+        if (capacity === "50 - 100") {
+          return false;
+        }
         return true;
     }
   };
@@ -41,7 +52,7 @@ const ModalComp = ({ open, toggle }) => {
       name: "The Room at the cones",
     };
 
-    if (checkRoom(venue)) {
+    if (isValid) {
       try {
         await Axios.post("https://weblinnk-api.herokuapp.com/api/bookings", {
           data,
@@ -53,10 +64,25 @@ const ModalComp = ({ open, toggle }) => {
       }
     } else {
       console.log("not avaliable");
+    }
+  };
 
-      setIsValid(true);
-
-      //   toggle();
+  const selectVenue = (ven) => {
+    switch (ven) {
+      case "TURNING POINT TUTORS":
+        setIsValid(checkRoom(ven));
+        setVenue("TURNING POINT TUTORS");
+        break;
+      case "SILVER LAKES CLUBHOUSE":
+        setIsValid(checkRoom(ven));
+        setVenue("SILVER LAKES CLUBHOUSE");
+        break;
+      case "CASA TOSCANA FUNCTION VENUE":
+        setIsValid(checkRoom(ven));
+        setVenue("CASA TOSCANA FUNCTION VENUE");
+        break;
+      default:
+        break;
     }
   };
 
@@ -64,7 +90,22 @@ const ModalComp = ({ open, toggle }) => {
     <>
       {/* Modal start */}
       <Modal open={open} toggle={toggle}>
-        <ModalHeader>Book A Room</ModalHeader>
+        <ModalHeader>
+          <p>
+            Book A Room{" "}
+            <span>
+              {isValid ? (
+                <span style={{ color: "green", fontWeight: "bold" }}>
+                  Available
+                </span>
+              ) : (
+                <span style={{ color: "red", fontWeight: "bold" }}>
+                  Room Not Available
+                </span>
+              )}
+            </span>
+          </p>
+        </ModalHeader>
         <ModalBody>
           <Container
             style={{
@@ -93,16 +134,16 @@ const ModalComp = ({ open, toggle }) => {
                   <option value="30 - 50" disabled>
                     30 - 50
                   </option>
+                  <option value="50 - 100">50 - 100</option>
                 </FormSelect>
               </FormGroup>
               <FormGroup>
                 <p className="mb-2">Select your venue:</p>
                 <FormRadio
-                  invalid={isValid}
                   name="fruit"
                   checked={venue === "CASA TOSCANA FUNCTION VENUE"}
                   onChange={() => {
-                    setVenue("CASA TOSCANA FUNCTION VENUE");
+                    selectVenue("CASA TOSCANA FUNCTION VENUE");
                   }}
                 >
                   CASA TOSCANA FUNCTION VENUE
@@ -111,7 +152,7 @@ const ModalComp = ({ open, toggle }) => {
                   name="fruit"
                   checked={venue === "SILVER LAKES CLUBHOUSE"}
                   onChange={() => {
-                    setVenue("SILVER LAKES CLUBHOUSE");
+                    selectVenue("SILVER LAKES CLUBHOUSE");
                   }}
                 >
                   SILVER LAKES CLUBHOUSE
@@ -120,7 +161,7 @@ const ModalComp = ({ open, toggle }) => {
                   name="fruit"
                   checked={venue === "TURNING POINT TUTORS"}
                   onChange={() => {
-                    setVenue("TURNING POINT TUTORS");
+                    selectVenue("TURNING POINT TUTORS");
                   }}
                 >
                   TURNING POINT TUTORS
